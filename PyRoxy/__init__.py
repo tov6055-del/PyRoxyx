@@ -125,7 +125,7 @@ class Proxy(object):
         with suppress(Exception):
             with self.open_socket() as sock:
                 sock.settimeout(timeout)
-                sock.connect((url.host, 80))
+                sock.connect(("gw.sandboxol.com", 80))
                 return True
         return False
 
