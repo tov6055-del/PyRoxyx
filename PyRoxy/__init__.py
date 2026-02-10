@@ -8,6 +8,7 @@ from socket import socket, SOCK_STREAM, AF_INET, gethostbyname
 from typing import AnyStr, Set, Collection, Any
 import uuid
 import time
+import hashlib
 
 from socks import socksocket, SOCKS4, SOCKS5, HTTP
 from yarl import URL
@@ -131,6 +132,8 @@ class Proxy(object):
 
                 x_nonce = str(uuid.uuid4())
                 x_time = int(time.time())
+                data = '{' + '"age":0,"memberName":"Older Brother","memberType":1,"msg":"","ownerName":"Older Brother","ownerType":1' + '}'
+                x_sign = hashlib.md5(f"6aDtpIdzQdgGwrpP6HzuPA/friend/api/v1/family/recruit{x_nonce}{x_time}{data}9EuDKGtoWAOWoQH1cRng-d5ihNN60hkGLaRiaZTk-6s".encode()).hexdigest()
 
                 sock.sendall(b"GET /server-time HTTP/1.1\r\nHost: gw.sandboxol.com\r\n\r\n")
                 if b'{"code":1,"' in sock.recv(4096):
