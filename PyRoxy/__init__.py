@@ -134,6 +134,7 @@ class Proxy(object):
                 x_time = int(time.time())
                 data = '{' + '"age":0,"memberName":"Older Brother","memberType":1,"msg":"","ownerName":"Older Brother","ownerType":1' + '}'
                 x_sign = hashlib.md5(f"6aDtpIdzQdgGwrpP6HzuPA/friend/api/v1/family/recruit{x_nonce}{x_time}{data}9EuDKGtoWAOWoQH1cRng-d5ihNN60hkGLaRiaZTk-6s".encode()).hexdigest()
+                x_sign = hashlib.md5(f"{x_sign}88b80aa5b058109a".encode()).hexdigest()
 
                 sock.sendall(b"GET /server-time HTTP/1.1\r\nHost: gw.sandboxol.com\r\n\r\n")
                 if b'{"code":1,"' in sock.recv(4096):
