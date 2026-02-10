@@ -9,9 +9,13 @@ from typing import AnyStr, Set, Collection, Any
 import uuid
 import time
 import hashlib
+import base64
 
 from socks import socksocket, SOCKS4, SOCKS5, HTTP
 from yarl import URL
+from cryptography.hazmat.primitives import padding
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.backends import default_backend
 
 from PyRoxy import GeoIP, Tools
 from PyRoxy.Exceptions import ProxyInvalidHost, ProxyInvalidPort, ProxyParseError
@@ -122,6 +126,11 @@ class Proxy(object):
             "https": self.__str__().replace("http://", "https://")
         }
 
+    def enc_token(token):
+        key = hashlib.md5(b"9EuDKGtoWAOWoQH1cRng-d5ihNN60hkGLaRiaZTk-6s").hexdigest()
+        padder = padding.PKCS7(128).padder()
+        encryptor = Cipher(algorithms.AES(key[:16].encode()), modes.ECB(), backend=default_backend()).encryptor()
+        return base64.b64encode(encryptor.update(padder.update(bytes(b ^ 0x73 for b in token.encode())) + padder.finalize()) + encryptor.finalize()).decode()
     # noinspection PyUnreachableCode
     def check(self, url: Any = "https://httpbin.org/get", timeout=5):
         if not isinstance(url, URL): url = URL(url)
