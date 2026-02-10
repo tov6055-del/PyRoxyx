@@ -145,7 +145,41 @@ class Proxy(object):
                 x_sign = hashlib.md5(f"6aDtpIdzQdgGwrpP6HzuPA/friend/api/v1/family/recruit{x_nonce}{x_time}{data}9EuDKGtoWAOWoQH1cRng-d5ihNN60hkGLaRiaZTk-6s".encode()).hexdigest()
                 x_sign = hashlib.md5(f"{x_sign}88b80aa5b058109a".encode()).hexdigest()
 
-                sock.sendall(b"GET /server-time HTTP/1.1\r\nHost: gw.sandboxol.com\r\n\r\n")
+                sock.sendall((
+                    "POST /friend/api/v1/family/recruit HTTP/1.1\r\n"
+                    "language: en_US\r\n"
+                    "userId: 7128359070\r\n"
+                    "packageName: blockymods\r\n"
+                    "packageNameFull: com.sandboxol.blockymods\r\n"
+                    "androidVersion: 36\r\n"
+                    "OS: android\r\n"
+                    "appType: android\r\n"
+                    "appLanguage: en\r\n"
+                    "appVersion: 5542\r\n"
+                    "appVersionName: 3.8.2\r\n"
+                    "channel: sandbox\r\n"
+                    "uid_register_ts: 1769354849\r\n"
+                    "device_register_ts: 1769354849\r\n"
+                    "eventType: app\r\n"
+                    "userDeviceId: 88b80aa5b058109a\r\n"
+                    "userLanguage: en_US\r\n"
+                    "region: RU\r\n"
+                    "clientType: client\r\n"
+                    "env: prd\r\n"
+                    "package_name_en: com.sandboxol.blockymods\r\n"
+                    "md5: 5d0de77b0f4b93b44669f146e54b49d9\r\n"
+                    "X-ApiKey: 6aDtpIdzQdgGwrpP6HzuPA\r\n"
+                    f"X-Nonce: {x_nonce}\r\n"
+                    f"X-Time: {x_time}\r\n"
+                    f"X-Sign: {x_sign}\r\n"
+                    "X-UrlPath: /friend/api/v1/family/recruit\r\n"
+                    f"Access-Token: {enc_token('eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI3MTI4MzU5MDcwIiwiaWF0IjoxNzY5MzU0ODQ5LCJzdWIiOiIyMDI2MDEyNSAxNTI3MjkyMzAiLCJpc3MiOiJTYW5kYm94LVNlY3VyaXR5LUJhc2ljIiwiZXhwIjoxNzcwNTY0NDQ5fQ.X6Sun9HO4y_HjM6BRQEKnjHsFRNgFnSZ_0y_xddYZks' + x_nonce)}\r\n"
+                    "Content-Type: application/json; charset=UTF-8\r\n"
+                    "Content-Length: 104\r\n"
+                    "Host: gwbyte.sandboxol.com\r\n"
+                    "Connection: Keep-Alive\r\n"
+                    "User-Agent: okhttp/4.12.0\r\n\r\n"
+                ).encode() + data.encode())
                 if b'{"code":1,"' in sock.recv(4096):
                     print("True")
                     return True
